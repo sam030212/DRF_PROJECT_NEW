@@ -27,7 +27,7 @@ def movie_list(request):
 # ---------------------------------------------------------------------------------------------------------------------
 # by default: set for 'GET' request
 
-@api_view(['GET', 'PUT', 'DELETE'])                                                 
+@api_view(['GET', 'PUT', 'DELETE'])       
 def movie_details(request, pk):
 
     if request.method == 'GET':
@@ -36,7 +36,8 @@ def movie_details(request, pk):
         return Response(serializer.data)
     
     if request.method == 'PUT':
-        serializer = MovieSerializer(data=request.data)
+        movie = Movie.objects.get(pk=pk)
+        serializer = MovieSerializer( movie, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
